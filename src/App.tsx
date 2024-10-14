@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar/Navbar";
 import BookingPage from "./pages/BookingPage/BookingPage";
 import HomePage from "./pages/HomePage/HomePage";
 import ServicesPage from "./pages/ServicesPage/ServicesPage";
+import Footer from "./components/Footer/Footer";
 import "./App.css";
 
 const App: React.FC = () => {
@@ -18,6 +19,7 @@ const App: React.FC = () => {
             <Route path="/booking" element={<BookingPage />} />
           </Routes>
         </div>
+        <Footer />
       </div>
     </Router>
   );

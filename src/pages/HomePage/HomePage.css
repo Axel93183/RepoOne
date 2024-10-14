@@ -14,6 +14,7 @@
 .homepage p {
   font-size: 1.2rem;
   color: var(--color-text);
+  margin-bottom: 20px;
 }
 
 /* Media Query pour les écrans de moins de 600px */

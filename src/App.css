@@ -45,3 +45,8 @@ body {
 .navbar ul li a {
   transition: color 0.3s, border-bottom 0.3s;
 }
+
+/* Ajout de transitions globales */
+body, .navbar ul li a, .service-item {
+  transition: all 0.3s ease;
+}
