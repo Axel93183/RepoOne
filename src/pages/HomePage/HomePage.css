@@ -1,0 +1,28 @@
+/* HomePage.css */
+
+.homepage {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.homepage h1 {
+  font-size: 2.5rem;
+  color: var(--color-primary);
+  margin-bottom: 20px;
+}
+
+.homepage p {
+  font-size: 1.2rem;
+  color: var(--color-text);
+}
+
+/* Media Query pour les écrans de moins de 600px */
+@media (max-width: 600px) {
+  .homepage h1 {
+    font-size: 2rem;
+  }
+
+  .homepage p {
+    font-size: 1rem;
+  }
+}
