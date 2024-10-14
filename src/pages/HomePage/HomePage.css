@@ -1,29 +1,182 @@
-/* HomePage.css */
-
+/* Style global de la homepage */
 .homepage {
+  font-family: Arial, sans-serif;
   text-align: center;
-  padding: 50px 20px;
 }
 
-.homepage h1 {
+/* Hero Section */
+.hero-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30px 60px 60px;
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.hero-content {
+  max-width: 50%;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.hero-content p {
+  font-size: 1.25rem;
+  margin-bottom: 20px;
+}
+
+.hero-image {
+  max-width: 50%;
+  border-radius: 100%;
+  overflow: hidden;
+  margin-left: 10px;
+}
+
+.hero-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Benefits Section */
+.benefits-section {
+  text-align: center;
+  padding: 60px;
+  background-color: #f2f2f2;
+}
+
+.benefits-grid {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin-top: 40px;
+}
+
+.benefit-item {
+  max-width: 250px;
+  text-align: center;
+  margin: 20px 10px;
+}
+
+.benefit-item img {
+  width: 80px;
+  margin-bottom: 20px;
+}
+
+/* Services Section */
+.services-section {
+  text-align: center;
+  padding: 60px;
+}
+
+.services-section p {
+  margin: 20px 0;
+}
+
+/* Testimonials Section */
+.testimonials-section {
+  padding: 60px;
+  background-color: #f2f2f2;
+  text-align: center;
+}
+
+.testimonials-grid {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin-top: 40px;
+}
+
+.testimonial-item {
+  max-width: 300px;
+  margin: 20px;
+}
+
+.testimonial-item p {
+  font-style: italic;
+  margin-bottom: 10px;
+}
+
+/* CTA Section */
+.cta-section {
+  text-align: center;
+  padding: 60px;
+  background-color: var(--color-secondary);
+  color: white;
+}
+
+.cta-section h2 {
   font-size: 2.5rem;
-  color: var(--color-primary);
   margin-bottom: 20px;
 }
 
-.homepage p {
-  font-size: 1.2rem;
-  color: var(--color-text);
-  margin-bottom: 20px;
+/* Media Queries */
+
+/* Pour les écrans de moins de 1200px */
+@media (max-width: 1200px) {
+  .hero-section {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .hero-content {
+    max-width: 100%;
+  }
+
+  .hero-image img {
+    max-width: 100%;
+    margin-top: 20px;
+  }
 }
 
-/* Media Query pour les écrans de moins de 600px */
+/* Pour les écrans de moins de 900px */
+@media (max-width: 900px) {
+  .hero-content h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero-content p {
+    font-size: 1.1rem;
+  }
+
+  .benefit-item img {
+    width: 60px;
+  }
+}
+
+/* Pour les écrans de moins de 600px */
 @media (max-width: 600px) {
-  .homepage h1 {
+  .hero-section {
+    padding: 15px 30px 30px;
+    /* padding: 30px 60px 60px; */
+  }
+
+  .hero-content h1 {
     font-size: 2rem;
   }
 
-  .homepage p {
+  .hero-content p {
     font-size: 1rem;
+  }
+
+  .cta-section h2 {
+    font-size: 2rem;
+  }
+
+  .benefit-item img {
+    width: 50px;
+  }
+
+  .benefits-grid,
+  .testimonials-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .testimonials-section {
+    padding: 40px 20px;
   }
 }
