@@ -1,13 +1,13 @@
-/* App.css */
-
-/* Définir les variables CSS pour la palette de couleurs */
 :root {
-  --color-primary: #2c3e50;
-  --color-secondary: #27ae60;
-  --color-neutral: #ecf0f1;
-  --color-text: #333333;
-  --color-background: #ffffff;
-  --font-family: "Roboto", sans-serif;
+  --color-primary: #257180; /* Turquoise pour le texte principal et les titres */
+  --color-secondary: #fd8b51; /* Orange pour les éléments interactifs et les boutons */
+  --color-background: #f2e5bf; /* Jaune pâle pour l'arrière-plan */
+  --color-text: #4a4a4a; /* Couleur du texte, vous pouvez l'ajuster pour améliorer le contraste si nécessaire */
+  --color-border: #e1e1e1; /* Bordures, vous pouvez le garder ou ajuster selon vos besoins */
+  --color-shadow: rgba(0, 0, 0, 0.1); /* Ombres, inchangées */
+  /* --color-background: #ffffff;  */
+  --color-error: #cb6040; /* Rouge pour les messages d'erreur */
+  --font-family: "Roboto", sans-serif; /* Police */
 }
 
 /* Appliquer un reset de base */
@@ -32,21 +32,11 @@ body {
 
 .main-container {
   flex: 1;
-  padding: 20px;
-}
-
-/* Styles pour les liens actifs dans le Navbar */
-.navbar ul li a.active {
-  color: var(--color-secondary);
-  border-bottom: 2px solid var(--color-secondary);
-}
-
-/* Ajout d'une transition pour les effets de survol */
-.navbar ul li a {
-  transition: color 0.3s, border-bottom 0.3s;
 }
 
 /* Ajout de transitions globales */
-body, .navbar ul li a, .service-item {
+body,
+.navbar ul li a,
+.service-item {
   transition: all 0.3s ease;
 }

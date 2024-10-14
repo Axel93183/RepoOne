@@ -1,0 +1,26 @@
+.dropdown-filter {
+  margin: 20px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+.dropdown-filter label {
+  font-size: 18px;
+  color: var(--color-text);
+}
+
+.dropdown-filter select {
+  padding: 10px 15px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background-color: #fff;
+  color: var(--color-text);
+  transition: border 0.3s ease;
+}
+
+.dropdown-filter select:focus {
+  border-color: var(--color-primary);
+}

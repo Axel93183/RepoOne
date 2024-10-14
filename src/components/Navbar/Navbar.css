@@ -16,14 +16,18 @@
 }
 
 .navbar ul li a {
-  color: var(--color-neutral);
+  color: var(--color-background);
   text-decoration: none;
   font-weight: 500;
+  transition: color 0.3s ease;
 }
 
 .navbar ul li a:hover {
   color: var(--color-secondary);
-  border-bottom: 2px solid var(--color-secondary);
+}
+
+.navbar ul li a.active {
+  color: var(--color-secondary);
 }
 
 /* Media Query pour les écrans de moins de 600px */
