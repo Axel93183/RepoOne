@@ -1,3 +1,16 @@
+import image1 from "../assets/images/entretien-maison.jpg";
+import image2 from "../assets/images/entretien-pendant-absence.jpg";
+import image3 from "../assets/images/travaux-jardinage.jpg";
+import image4 from "../assets/images/petit-bricolage.jpg";
+import image5 from "../assets/images/preparation-repas.jpg";
+import image6 from "../assets/images/livraison-repas.jpg";
+import image7 from "../assets/images/livraison-course.jpg";
+import image8 from "../assets/images/conduite-cause-invalidite.jpg";
+import image9 from "../assets/images/garde-a-domicile.jpg";
+import image10 from "../assets/images/accompagnement-extrascolaire.jpg";
+import image11 from "../assets/images/soutien-scolaire.jpg";
+import image12 from "../assets/images/assistance-informatique.jpg";
+
 import {
   FaCar,
   FaChild,
@@ -17,14 +30,14 @@ export const servicesData = [
         title: "Entretien de la maison et travaux ménagers",
         description:
           "Ménage, nettoyage, repassage, lessive, vaisselle, et nettoyage des vitres.",
-        imageUrl: "https://example.com/image1.jpg",
+        imageUrl: image1,
       },
       {
         id: "2",
         title: "Maintenance, entretien et vigilance temporaires à domicile",
         description:
           "Surveillance et entretien de votre domicile pendant votre absence.",
-        imageUrl: "https://example.com/image12.jpg",
+        imageUrl: image2,
       },
     ],
   },
@@ -38,14 +51,14 @@ export const servicesData = [
         title: "Petits travaux de jardinage",
         description:
           "Entretien des espaces verts, tonte de pelouse, taille de haies.",
-        imageUrl: "https://example.com/image2.jpg",
+        imageUrl: image3,
       },
       {
         id: "4",
         title: "Travaux de petit bricolage",
         description:
           "Réparation de meubles, petits travaux de montage ou démontage.",
-        imageUrl: "https://example.com/image3.jpg",
+        imageUrl: image4,
       },
     ],
   },
@@ -59,20 +72,20 @@ export const servicesData = [
         title: "Préparation de repas à domicile",
         description:
           "Aide à la cuisine et préparation des repas selon vos besoins.",
-        imageUrl: "https://example.com/image6.jpg",
+        imageUrl: image5,
       },
       {
         id: "6",
         title: "Livraison de repas à domicile",
         description:
           "Service de livraison de repas directement à votre domicile.",
-        imageUrl: "https://example.com/image7.jpg",
+        imageUrl:image6,
       },
       {
         id: "7",
         title: "Livraison de courses à domicile",
         description: "Nous faisons vos courses et vous les livrons à domicile.",
-        imageUrl: "https://example.com/image8.jpg",
+        imageUrl: image7,
       },
     ],
   },
@@ -87,7 +100,7 @@ export const servicesData = [
           "Conduite du véhicule des personnes en cas d’invalidité temporaire",
         description:
           "Assistance à la conduite de votre véhicule si vous ne pouvez pas conduire.",
-        imageUrl: "https://example.com/image18.jpg",
+        imageUrl: image8,
       },
     ],
   },
@@ -101,7 +114,7 @@ export const servicesData = [
         title: "Garde d’enfants de plus de 3 ans à domicile",
         description:
           "Garde régulière ou ponctuelle à domicile pour vos enfants.",
-        imageUrl: "https://example.com/image4.jpg",
+        imageUrl: image9,
       },
       {
         id: "10",
@@ -109,14 +122,14 @@ export const servicesData = [
           "Accompagnement des enfants de plus de 3 ans dans leurs déplacements",
         description:
           "Accompagnement de vos enfants à leurs activités scolaires ou extrascolaires.",
-        imageUrl: "https://example.com/image14.jpg",
+        imageUrl: image10,
       },
       {
         id: "11",
         title: "Soutien scolaire ou cours à domicile",
         description:
           "Aide aux devoirs et soutien scolaire personnalisé à domicile.",
-        imageUrl: "https://example.com/image5.jpg",
+        imageUrl: image11,
       },
     ],
   },
@@ -130,7 +143,7 @@ export const servicesData = [
         title: "Assistance informatique à domicile",
         description:
           "Assistance et formation informatique à domicile pour vos besoins quotidiens.",
-        imageUrl: "https://example.com/image10.jpg",
+        imageUrl: image12,
       },
     ],
   },
