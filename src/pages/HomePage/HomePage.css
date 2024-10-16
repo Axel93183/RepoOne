@@ -9,6 +9,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 10px;
   padding: 30px 60px 60px;
   background-color: var(--color-primary);
   color: white;
@@ -28,17 +29,25 @@
   margin-bottom: 20px;
 }
 
+.hero-content p span {
+  color: var(--color-secondary);
+  font-weight: bold;
+  font-size: 1.3rem;
+  margin: 5px;
+}
+
 .hero-image {
-  max-width: 50%;
-  border-radius: 100%;
+  max-width: 45%;
   overflow: hidden;
-  margin-left: 10px;
+  display: flex;
+  align-items: center;
 }
 
 .hero-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 100%;
 }
 
 /* Benefits Section */
@@ -50,20 +59,9 @@
 
 .benefits-grid {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   flex-wrap: wrap;
   margin-top: 40px;
-}
-
-.benefit-item {
-  max-width: 250px;
-  text-align: center;
-  margin: 20px 10px;
-}
-
-.benefit-item img {
-  width: 80px;
-  margin-bottom: 20px;
 }
 
 /* Services Section */
@@ -120,15 +118,20 @@
   .hero-section {
     flex-direction: column;
     text-align: center;
+    gap: 30px;
+    padding: 15px 30px 30px;
   }
 
   .hero-content {
     max-width: 100%;
   }
 
-  .hero-image img {
-    max-width: 100%;
-    margin-top: 20px;
+  .hero-content h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero-image {
+    max-width: 75%;
   }
 }
 
@@ -141,19 +144,10 @@
   .hero-content p {
     font-size: 1.1rem;
   }
-
-  .benefit-item img {
-    width: 60px;
-  }
 }
 
 /* Pour les écrans de moins de 600px */
 @media (max-width: 600px) {
-  .hero-section {
-    padding: 15px 30px 30px;
-    /* padding: 30px 60px 60px; */
-  }
-
   .hero-content h1 {
     font-size: 2rem;
   }
@@ -164,10 +158,6 @@
 
   .cta-section h2 {
     font-size: 2rem;
-  }
-
-  .benefit-item img {
-    width: 50px;
   }
 
   .benefits-grid,

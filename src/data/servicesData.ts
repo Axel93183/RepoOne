@@ -17,9 +17,24 @@ import {
   FaHome,
   FaShoppingCart,
   FaTools,
-} from "react-icons/fa"; // Icons
+} from "react-icons/fa";
+import { IconType } from "react-icons";
 
-export const servicesData = [
+interface Service {
+  id: string;
+  title: string;
+  description: string;
+  imageUrl: string;
+}
+
+interface ServiceCategory {
+  id: string;
+  category: string;
+  icon: IconType;
+  services: Service[];
+}
+
+export const servicesData: ServiceCategory[] = [
   {
     id: "1",
     category: "Entretien de la maison",
@@ -79,7 +94,7 @@ export const servicesData = [
         title: "Livraison de repas à domicile",
         description:
           "Service de livraison de repas directement à votre domicile.",
-        imageUrl:image6,
+        imageUrl: image6,
       },
       {
         id: "7",
@@ -111,7 +126,7 @@ export const servicesData = [
     services: [
       {
         id: "9",
-        title: "Garde d’enfants de plus de 3 ans à domicile",
+        title: "Garde d’enfants de plus de 6 ans à domicile",
         description:
           "Garde régulière ou ponctuelle à domicile pour vos enfants.",
         imageUrl: image9,
@@ -119,7 +134,7 @@ export const servicesData = [
       {
         id: "10",
         title:
-          "Accompagnement des enfants de plus de 3 ans dans leurs déplacements",
+          "Accompagnement des enfants de plus de 6 ans dans leurs déplacements",
         description:
           "Accompagnement de vos enfants à leurs activités scolaires ou extrascolaires.",
         imageUrl: image10,

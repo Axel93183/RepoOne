@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import DropdownFilter from "../../components/DropdownFilter/DropdownFilter"; // Import DropdownFilter
+import DropdownFilter from "../../components/DropdownFilter/DropdownFilter";
 import ServiceCard from "../../components/ServiceCard/ServiceCard";
-import { servicesData } from "../../data/servicesData"; // Import servicesData
+import { servicesData } from "../../data/servicesData";
 import "./ServicesPage.css";
 
 const ServicesPage: React.FC = () => {
@@ -11,10 +11,8 @@ const ServicesPage: React.FC = () => {
     setSelectedCategory(e.target.value);
   };
 
-  // Get a list of categories from servicesData
   const categories = servicesData.map((cat) => cat.category);
 
-  // Filter services by selected category
   const filteredServices = selectedCategory
     ? servicesData.filter((cat) => cat.category === selectedCategory)
     : servicesData;
