@@ -33,7 +33,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
             <div className="service-icon">
               <Icon />
             </div>
-            <h2>{title}</h2>
+            <h3>{title}</h3>
           </div>
           <p>{description}</p>
           <button className="service-button">En savoir plus</button>
