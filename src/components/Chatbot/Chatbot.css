@@ -1,0 +1,125 @@
+.chatbot-container {
+  background-color: var(--color-primary);
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  max-height: 300px;
+  height: 100%;
+  max-width: 350px;
+  width: 100%;
+  z-index: 9999;
+  border-radius: 15px;
+  padding: 20px;
+  background: opacity(0.8);
+  overflow-y: auto;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8);
+}
+
+.chatbox {
+  background-color: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  max-height: 500px;
+  overflow-y: auto;
+  margin-bottom: 15px;
+}
+
+.message {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.message div {
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 70%;
+  line-height: 1.4;
+}
+
+.message div:first-child {
+  align-self: flex-end;
+  background-color: #fd8b51; /* Couleur de la bulle utilisateur */
+  color: white;
+}
+
+.message div:last-child {
+  align-self: flex-start;
+  background-color: #cb6040; /* Couleur de la bulle chatbot */
+  color: white;
+}
+
+/* Input et Bouton */
+.chatbot-input-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+input[type="text"] {
+  width: calc(100% - 100px);
+  padding: 10px;
+  border: 2px solid #257180;
+  border-radius: 10px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus {
+  border-color: #fd8b51;
+}
+
+.chatbot-send-button {
+  width: 100px;
+  background-color: var(--color-secondary);
+  color: var(--color-text);
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  font-weight: 600;
+  align-items: center;
+}
+
+.chatbot-send-button:hover {
+  background-color: var(--color-background);
+}
+
+.chatbot-send-button:disabled {
+  background-color: #ddd;
+  cursor: not-allowed;
+}
+
+/* Scroll personnalisé */
+.chatbox::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chatbox::-webkit-scrollbar-thumb {
+  background-color: #fd8b51;
+  border-radius: 10px;
+}
+
+.chatbox::-webkit-scrollbar-track {
+  background-color: #f2e5bf;
+}
+
+/* Animation pour l'ajout de messages */
+.message div {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

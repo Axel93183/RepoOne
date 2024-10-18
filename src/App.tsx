@@ -6,11 +6,13 @@ import HomePage from "./pages/HomePage/HomePage";
 import ServicesPage from "./pages/ServicesPage/ServicesPage";
 import Footer from "./components/Footer/Footer";
 import "./App.css";
+import Chatbot from "./components/Chatbot/Chatbot";
 
 const App: React.FC = () => {
   return (
     <Router>
       <div className="App">
+        <Chatbot />
         <Navbar />
         <div className="main-container">
           <Routes>
