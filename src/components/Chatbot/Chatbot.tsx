@@ -6,6 +6,7 @@ const Chatbot: React.FC = () => {
   const [messages, setMessages] = useState<
     Array<{ user: string; bot: string }>
   >([]);
+  const [showMessages, setShowMessages] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   const handleSendMessage = (message: string) => {
@@ -39,6 +40,7 @@ const Chatbot: React.FC = () => {
   };
 
   const handleQuestionClick = (question: string) => {
+    setShowMessages(true);
     handleSendMessage(question);
   };
 
@@ -53,7 +55,7 @@ const Chatbot: React.FC = () => {
       <div className="chatbox">
         {questionsData.length > 0 && (
           <div className="suggested-questions">
-            <p>Voici quelques questions que vous pouvez me poser :</p>
+            <p className="suggested-questions-title">Questions fréquentes:</p>
             {questionsData.map((q, index) => (
               <button
                 key={index}
@@ -66,7 +68,10 @@ const Chatbot: React.FC = () => {
           </div>
         )}
       </div>
-      <div className="messages-container">
+      <div
+        className="messages-container"
+        style={{ display: showMessages ? "block" : "none" }}
+      >
         {messages.map((msg, index) => (
           <div key={index} className="message">
             {msg.user && (
