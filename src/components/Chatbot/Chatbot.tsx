@@ -1,75 +1,66 @@
+import React, { useState } from "react";
+import { questionsData } from "../../data/questionsData";
 import "./Chatbot.css";
 
-import React, { useState } from "react";
-
 const Chatbot: React.FC = () => {
-  const [input, setInput] = useState<string>("");
   const [messages, setMessages] = useState<
     Array<{ user: string; bot: string }>
   >([]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInput(e.target.value);
+  const handleSendMessage = (message: string) => {
+    const foundAnswer = questionsData.find(
+      (q) => q.question.toLowerCase() === message.toLowerCase()
+    );
+
+    // Add the bot's response (or a default message)
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      {
+        user: message,
+        bot: foundAnswer
+          ? foundAnswer.answer
+          : "Désolé, je ne connais pas la réponse à cette question.",
+      },
+    ]);
   };
 
-  const handleSendMessage = async () => {
-    if (input.trim() === "") return;
-
-    const userMessage = input;
-    setMessages([...messages, { user: userMessage, bot: "..." }]);
-    setInput("");
-
-    try {
-      const response = await fetch("http://localhost:5000/api/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ question: userMessage }),
-      });
-
-      const data = await response.json();
-      setMessages((prevMessages) =>
-        prevMessages.map((msg, i) =>
-          i === prevMessages.length - 1 ? { ...msg, bot: data.answer } : msg
-        )
-      );
-    } catch (error) {
-      console.error("Error fetching chatbot response:", error);
-      setMessages((prevMessages) =>
-        prevMessages.map((msg, i) =>
-          i === prevMessages.length - 1
-            ? { ...msg, bot: "Erreur dans la réponse du chatbot." }
-            : msg
-        )
-      );
-    }
+  const handleQuestionClick = (question: string) => {
+    handleSendMessage(question);
   };
 
   return (
     <div className="chatbot-container">
       <div className="chatbox">
+        {questionsData.length > 0 && (
+          <div className="suggested-questions">
+            <p>Voici quelques questions que vous pouvez me poser :</p>
+            {questionsData.map((q, index) => (
+              <button
+                key={index}
+                className="question-button"
+                onClick={() => handleQuestionClick(q.question)}
+              >
+                {q.question}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+      <div className="messages-container">
         {messages.map((msg, index) => (
           <div key={index} className="message">
-            <div>
-              <strong>Vous:</strong> {msg.user}
-            </div>
-            <div>
-              <strong>Assistance:</strong> {msg.bot}
-            </div>
+            {msg.user && (
+              <div className="user-message">
+                <strong>Utilisateur:</strong> {msg.user}
+              </div>
+            )}
+            {msg.bot && (
+              <div className="bot-message">
+                <strong>Chatbot:</strong> {msg.bot}
+              </div>
+            )}
           </div>
         ))}
-      </div>
-      <div className="chatbot-input-container">
-        <input
-          type="text"
-          value={input}
-          onChange={handleInputChange}
-          placeholder="Posez votre question..."
-        />
-        <button className="chatbot-send-button" onClick={handleSendMessage}>
-          Envoyer
-        </button>
       </div>
     </div>
   );
