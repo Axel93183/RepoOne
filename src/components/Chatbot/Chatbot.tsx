@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { questionsData } from "../../data/questionsData";
 import "./Chatbot.css";
 
@@ -6,27 +6,47 @@ const Chatbot: React.FC = () => {
   const [messages, setMessages] = useState<
     Array<{ user: string; bot: string }>
   >([]);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   const handleSendMessage = (message: string) => {
-    const foundAnswer = questionsData.find(
-      (q) => q.question.toLowerCase() === message.toLowerCase()
-    );
+    if (message.trim() === "") return;
 
-    // Add the bot's response (or a default message)
     setMessages((prevMessages) => [
       ...prevMessages,
-      {
-        user: message,
-        bot: foundAnswer
-          ? foundAnswer.answer
-          : "Désolé, je ne connais pas la réponse à cette question.",
-      },
+      { user: message, bot: "" },
     ]);
+
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { user: "", bot: "loader" },
+    ]);
+
+    setTimeout(() => {
+      const foundAnswer = questionsData.find(
+        (q) => q.question.toLowerCase() === message.toLowerCase()
+      );
+
+      setMessages((prevMessages) => [
+        ...prevMessages.slice(0, -1),
+        {
+          user: "",
+          bot: foundAnswer
+            ? foundAnswer.answer
+            : "Désolé, je ne connais pas la réponse à cette question.",
+        },
+      ]);
+    }, 1200);
   };
 
   const handleQuestionClick = (question: string) => {
     handleSendMessage(question);
   };
+
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
 
   return (
     <div className="chatbot-container">
@@ -55,12 +75,25 @@ const Chatbot: React.FC = () => {
               </div>
             )}
             {msg.bot && (
-              <div className="bot-message">
-                <strong>Chatbot:</strong> {msg.bot}
+              <div
+                className={msg.bot === "loader" ? "bot-loader" : "bot-message"}
+              >
+                {msg.bot === "loader" ? (
+                  <>
+                    <span>.</span>
+                    <span>.</span>
+                    <span>.</span>
+                  </>
+                ) : (
+                  <>
+                    <strong>Chatbot:</strong> <span>{msg.bot}</span>
+                  </>
+                )}
               </div>
             )}
           </div>
         ))}
+        <div ref={messagesEndRef} />
       </div>
     </div>
   );
