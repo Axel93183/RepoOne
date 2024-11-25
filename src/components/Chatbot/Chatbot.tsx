@@ -41,6 +41,11 @@ const Chatbot: React.FC = () => {
     handleSendMessage(question);
   };
 
+  const handleCloseChatbot = () => {
+    setIsChatBotOpen(false);
+    setShowMessages(false);
+  };
+
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
@@ -62,10 +67,7 @@ const Chatbot: React.FC = () => {
         <div className="chatbot-container visible">
           <div className="chatbot-header">
             <p>Foire Aux Questions - FAQ</p>
-            <button
-              className="close-button"
-              onClick={() => setIsChatBotOpen(false)}
-            >
+            <button className="close-button" onClick={handleCloseChatbot}>
               ✖
             </button>
           </div>
