@@ -74,7 +74,7 @@ const HomePage: React.FC = () => {
             icon={iconChat}
             altText="icon chatbot"
             title="Contact simplifié"
-            description="Contactez nous facilement via le formulaire sur notre site. De plus, un assistant virtuel est à votre disposition 24/7 pour répondre à vos questions."
+            description="Contactez nous facilement via le formulaire sur notre site. De plus, un Assistant Virtuel est à votre disposition pour répondre à vos questions les plus fréquentes."
           />
         </div>
       </section>

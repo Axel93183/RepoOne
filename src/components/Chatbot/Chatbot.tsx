@@ -7,26 +7,23 @@ const Chatbot: React.FC = () => {
     Array<{ user: string; bot: string }>
   >([]);
   const [showMessages, setShowMessages] = useState(false);
+  const [isChatBotOpen, setIsChatBotOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   const handleSendMessage = (message: string) => {
     if (message.trim() === "") return;
 
-    setMessages((prevMessages) => [
-      ...prevMessages,
+    const newMessages = [
       { user: message, bot: "" },
-    ]);
-
-    setMessages((prevMessages) => [
-      ...prevMessages,
       { user: "", bot: "loader" },
-    ]);
+    ];
+
+    setMessages((prevMessages) => [...prevMessages, ...newMessages]);
 
     setTimeout(() => {
       const foundAnswer = questionsData.find(
         (q) => q.question.toLowerCase() === message.toLowerCase()
       );
-
       setMessages((prevMessages) => [
         ...prevMessages.slice(0, -1),
         {
@@ -51,56 +48,75 @@ const Chatbot: React.FC = () => {
   }, [messages]);
 
   return (
-    <div className="chatbot-container">
-      <div className="chatbox">
-        {questionsData.length > 0 && (
-          <div className="suggested-questions">
-            <p className="suggested-questions-title">Questions fréquentes:</p>
-            {questionsData.map((q, index) => (
-              <button
-                key={index}
-                className="question-button"
-                onClick={() => handleQuestionClick(q.question)}
-              >
-                {q.question}
-              </button>
-            ))}
+    <>
+      {!isChatBotOpen && (
+        <div
+          className={`chatbot-bubble ${isChatBotOpen ? "hidden" : "visible"}`}
+          onClick={() => setIsChatBotOpen(true)}
+        >
+          💬
+        </div>
+      )}
+
+      {isChatBotOpen && (
+        <div className="chatbot-container visible">
+          <div className="chatbot-header">
+            <p>Foire Aux Questions - FAQ</p>
+            <button
+              className="close-button"
+              onClick={() => setIsChatBotOpen(false)}
+            >
+              ✖
+            </button>
           </div>
-        )}
-      </div>
-      <div
-        className="messages-container"
-        style={{ display: showMessages ? "block" : "none" }}
-      >
-        {messages.map((msg, index) => (
-          <div key={index} className="message">
-            {msg.user && (
-              <div className="user-message">
-                <strong>Utilisateur:</strong> {msg.user}
-              </div>
-            )}
-            {msg.bot && (
-              <div
-                className={msg.bot === "loader" ? "bot-loader" : "bot-message"}
-              >
-                {msg.bot === "loader" ? (
-                  <>
-                    <span>.</span>
-                    <span>.</span>
-                    <span>.</span>
-                  </>
-                ) : (
-                  <>
-                    <strong>Chatbot:</strong> <span>{msg.bot}</span>
-                  </>
-                )}
+          <div className="chatbot">
+            {questionsData.length > 0 && (
+              <div className="suggested-questions">
+                {questionsData.map((q, index) => (
+                  <button
+                    key={index}
+                    className="question-button"
+                    onClick={() => handleQuestionClick(q.question)}
+                  >
+                    {q.question}
+                  </button>
+                ))}
               </div>
             )}
           </div>
-        ))}
-        <div ref={messagesEndRef} />
-      </div>
-    </div>
+
+          {showMessages && (
+            <div className="messages-container">
+              {messages.map((msg, index) => (
+                <div key={index} className="message">
+                  {msg.user && (
+                    <div className="user-message">
+                      <strong>Utilisateur:</strong> {msg.user}
+                    </div>
+                  )}
+                  {msg.bot && (
+                    <div
+                      className={
+                        msg.bot === "loader" ? "bot-loader" : "bot-message"
+                      }
+                    >
+                      {msg.bot === "loader" ? (
+                        <span>...</span>
+                      ) : (
+                        <>
+                          <strong>Chatbot:</strong> <span>{msg.bot}</span>
+                        </>
+                      )}
+                    </div>
+                  )}
+                </div>
+              ))}
+              <div ref={messagesEndRef} />
+            </div>
+          )}
+        </div>
+      )}
+    </>
   );
 };
 
