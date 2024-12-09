@@ -22,8 +22,10 @@ const ContactForm: React.FC = () => {
 
     console.log("Données du formulaire envoyées :", formData);
 
-    if (!/^[a-zA-Z\s]+$/.test(formData.name)) {
-      alert("Le nom contient des caractères invalides.");
+    if (!/^[a-zA-Z\s-]+$/.test(formData.name)) {
+      alert(
+        "Le nom contient des caractères invalides. Seuls les lettres, espaces et tirets sont autorisés."
+      );
       return;
     }
 
