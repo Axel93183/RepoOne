@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { IconType } from "react-icons";
 import { useInView } from "react-intersection-observer";
+import { useNavigate } from "react-router-dom";
+import Button from "../Button/Button";
 import Modal from "../Modal/Modal";
 import "./ServiceCard.css";
 
@@ -25,9 +27,17 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
   });
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+
+  const handleReservation = () => {
+    navigate("/booking");
+    window.scrollTo({
+      top: 0,
+    });
+  };
 
   return (
     <>
@@ -59,6 +69,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
         {imageUrl && <img src={imageUrl} alt={title} />}
         <div className="modal-offer">
           <p>{offer}</p>
+          <Button text="Réserver" onClick={handleReservation} />
         </div>
       </Modal>
     </>
