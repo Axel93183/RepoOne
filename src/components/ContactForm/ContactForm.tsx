@@ -8,7 +8,8 @@ const ContactForm: React.FC = () => {
     message: "",
   });
 
-  //   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -21,23 +22,25 @@ const ContactForm: React.FC = () => {
 
     console.log("Données du formulaire envoyées :", formData);
 
-    // try {
-    //   const response = await fetch("/api/contact", {
-    //     method: "POST",
-    //     headers: { "Content-Type": "application/json" },
-    //     body: JSON.stringify(formData),
-    //   });
+    try {
+      const response = await fetch("http://localhost:5000/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
-    //   if (response.ok) {
-    //     setStatus("success");
-    //     setFormData({ name: "", email: "", message: "" });
-    //   } else {
-    //     setStatus("error");
-    //   }
-    // } catch (error) {
-    //   console.error("Erreur lors de l'envoi :", error);
-    //   setStatus("error");
-    // }
+      if (response.ok) {
+        const data = await response.json();
+        setPreviewUrl(data.previewUrl);
+        setStatus("success");
+        setFormData({ name: "", email: "", message: "" });
+      } else {
+        setStatus("error");
+      }
+    } catch (error) {
+      console.error("Erreur lors de l'envoi :", error);
+      setStatus("error");
+    }
   };
 
   return (
@@ -73,14 +76,24 @@ const ContactForm: React.FC = () => {
       </label>
       <button type="submit">Envoyer</button>
 
-      {/* {status === "success" && (
-        <p className="success-message">Message envoyé avec succès !</p>
+      {status === "success" && (
+        <>
+          <p className="success-message">Message envoyé avec succès !</p>
+          {previewUrl && (
+            <p className="preview-url">
+              Aperçu du message :
+              <a href={previewUrl} target="_blank" rel="noopener noreferrer">
+                {previewUrl}
+              </a>
+            </p>
+          )}
+        </>
       )}
       {status === "error" && (
         <p className="error-message">
           Erreur lors de l'envoi. Veuillez réessayer.
         </p>
-      )} */}
+      )}
     </form>
   );
 };
