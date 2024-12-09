@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import DropdownFilter from "../../components/DropdownFilter/DropdownFilter";
+import ScrollToTopButton from "../../components/ScrollToTopButton/ScrollToTopButton";
 import ServiceCard from "../../components/ServiceCard/ServiceCard";
 import { servicesData } from "../../data/servicesData";
 import "./ServicesPage.css";
@@ -46,6 +47,7 @@ const ServicesPage: React.FC = () => {
           </div>
         ))}
       </div>
+      <ScrollToTopButton />
     </div>
   );
 };
