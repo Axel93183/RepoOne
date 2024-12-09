@@ -9,6 +9,7 @@ interface ServiceCardProps {
   description: string;
   icon: IconType;
   imageUrl?: string;
+  offer: string;
 }
 
 const ServiceCard: React.FC<ServiceCardProps> = ({
@@ -16,6 +17,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
   description,
   icon: Icon,
   imageUrl,
+  offer,
 }) => {
   const { ref, inView } = useInView({
     triggerOnce: true,
@@ -55,6 +57,9 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
         <h3>{title}</h3>
         <p>{description}</p>
         {imageUrl && <img src={imageUrl} alt={title} />}
+        <div className="modal-offer">
+          <p>{offer}</p>
+        </div>
       </Modal>
     </>
   );

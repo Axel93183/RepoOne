@@ -41,6 +41,7 @@ const ServicesPage: React.FC = () => {
                   description={service.description}
                   icon={category.icon}
                   imageUrl={service.imageUrl}
+                  offer={service.offer}
                 />
               ))}
             </div>
