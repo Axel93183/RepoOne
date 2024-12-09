@@ -22,6 +22,16 @@ const ContactForm: React.FC = () => {
 
     console.log("Données du formulaire envoyées :", formData);
 
+    if (!/^[a-zA-Z\s]+$/.test(formData.name)) {
+      alert("Le nom contient des caractères invalides.");
+      return;
+    }
+
+    if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      alert("Adresse email invalide.");
+      return;
+    }
+
     try {
       const response = await fetch("http://localhost:5000/api/contact", {
         method: "POST",
