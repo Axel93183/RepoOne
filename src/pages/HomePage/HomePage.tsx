@@ -12,14 +12,17 @@ import iconMoney from "../../assets/icons/icon-money.png";
 import iconShield from "../../assets/icons/icon-security.png";
 import image1 from "../../assets/images/image-accueil-1.jpg";
 
-import "./HomePage.css";
 import ScrollToTopButton from "../../components/ScrollToTopButton/ScrollToTopButton";
+import "./HomePage.css";
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
 
   const handleGetStarted = () => {
     navigate("/services");
+    window.scrollTo({
+      top: 0,
+    });
   };
 
   return (
