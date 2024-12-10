@@ -33,7 +33,14 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
   const closeModal = () => setIsModalOpen(false);
 
   const handleReservation = () => {
-    navigate("/booking");
+    navigate("/booking", {
+      state: {
+        prefilledData: {
+          title,
+          description,
+        },
+      },
+    });
     window.scrollTo({
       top: 0,
     });

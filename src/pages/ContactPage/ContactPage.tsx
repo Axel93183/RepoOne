@@ -4,7 +4,7 @@ import "./ContactPage.css";
 
 const Contact: React.FC = () => {
   return (
-    <div style={{ padding: "20px", maxWidth: "800px", margin: "0 auto" }}>
+    <div className="contact-page">
       <h1>Contactez-nous</h1>
       <p>
         Si vous avez des questions ou souhaitez plus d'informations sur nos
