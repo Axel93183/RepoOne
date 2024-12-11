@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import DropdownFilter from "../DropdownFilter/DropdownFilter";
+import { servicesData } from "../../data/servicesData";
 import "./BookingForm.css";
 
 interface BookingFormProps {
@@ -9,6 +11,8 @@ interface BookingFormProps {
 }
 
 const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [selectedService, setSelectedService] = useState<string>("");
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -23,13 +27,46 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
 
   useEffect(() => {
     if (prefilledData) {
+      const category = servicesData.find((cat) =>
+        cat.services.some((srv) => srv.title === prefilledData.title)
+      )?.category;
+
+      setSelectedCategory(category || "");
+      setSelectedService(prefilledData.title || "");
       setFormData((prev) => ({
         ...prev,
-        title: prefilledData.title,
-        description: prefilledData.description,
+        category: category || "",
+        title: prefilledData.title || "",
+        description: prefilledData.description || "",
       }));
     }
   }, [prefilledData]);
+
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const category = e.target.value;
+    setSelectedCategory(category);
+    setSelectedService("");
+    setFormData((prev) => ({
+      ...prev,
+      category,
+      title: "",
+      description: "",
+    }));
+  };
+
+  const handleServiceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const serviceTitle = e.target.value;
+    const service = servicesData
+      .find((cat) => cat.category === selectedCategory)
+      ?.services.find((srv) => srv.title === serviceTitle);
+
+    setSelectedService(serviceTitle);
+    setFormData((prev) => ({
+      ...prev,
+      title: serviceTitle,
+      description: service?.description || "",
+    }));
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -50,18 +87,26 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
   return (
     <form onSubmit={handleSubmit} className="booking-form">
       {/* Prestation */}
-      <div>
-        <label htmlFor="title">Prestation</label>
-        <input
-          id="title"
-          name="title"
-          type="text"
-          value={formData.title}
-          onChange={handleChange}
-          placeholder="Nom de la prestation"
-          readOnly={!!prefilledData} // Lecture seule si prérempli
+      <DropdownFilter
+        options={servicesData.map((cat) => cat.category)}
+        selectedOption={selectedCategory}
+        handleChange={handleCategoryChange}
+        label="Catégorie"
+      />
+
+      {selectedCategory && (
+        <DropdownFilter
+          options={
+            servicesData
+              .find((cat) => cat.category === selectedCategory)
+              ?.services.map((srv) => srv.title) || []
+          }
+          selectedOption={selectedService}
+          handleChange={handleServiceChange}
+          label="Service"
         />
-      </div>
+      )}
+
       <div>
         <label htmlFor="description">Description</label>
         <textarea
@@ -70,7 +115,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
           value={formData.description}
           onChange={handleChange}
           placeholder="Description de la prestation"
-          readOnly={!!prefilledData} // Lecture seule si prérempli
+          readOnly
         />
       </div>
 
