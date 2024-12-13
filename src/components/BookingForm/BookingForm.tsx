@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import DropdownFilter from "../DropdownFilter/DropdownFilter";
 import { servicesData } from "../../data/servicesData";
+import DropdownFilter from "../DropdownFilter/DropdownFilter";
 import "./BookingForm.css";
 
 interface BookingFormProps {
@@ -10,9 +10,20 @@ interface BookingFormProps {
   };
 }
 
+// Utilise `flatMap` pour aplatir les données de `servicesData` pour obtenir une liste unique de tous les services
+// Chaque service est associé à son titre, sa catégorie et sa description.
+const allServices = servicesData.flatMap((cat) =>
+  cat.services.map((srv) => ({
+    title: srv.title,
+    category: cat.category,
+    description: srv.description,
+  }))
+);
+
 const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [selectedService, setSelectedService] = useState<string>("");
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -27,15 +38,15 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
 
   useEffect(() => {
     if (prefilledData) {
-      const category = servicesData.find((cat) =>
-        cat.services.some((srv) => srv.title === prefilledData.title)
-      )?.category;
+      const service = allServices.find(
+        (srv) => srv.title === prefilledData.title
+      );
 
-      setSelectedCategory(category || "");
+      setSelectedCategory(service?.category || "");
       setSelectedService(prefilledData.title || "");
       setFormData((prev) => ({
         ...prev,
-        category: category || "",
+        category: service?.category || "",
         title: prefilledData.title || "",
         description: prefilledData.description || "",
       }));
@@ -56,13 +67,13 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
 
   const handleServiceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const serviceTitle = e.target.value;
-    const service = servicesData
-      .find((cat) => cat.category === selectedCategory)
-      ?.services.find((srv) => srv.title === serviceTitle);
+    const service = allServices.find((srv) => srv.title === serviceTitle);
 
     setSelectedService(serviceTitle);
+    setSelectedCategory(service?.category || "");
     setFormData((prev) => ({
       ...prev,
+      category: service?.category || "",
       title: serviceTitle,
       description: service?.description || "",
     }));
@@ -84,29 +95,31 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
     alert("Réservation enregistrée !");
   };
 
+  const filteredServices = selectedCategory
+    ? allServices.filter((srv) => srv.category === selectedCategory)
+    : allServices;
+
   return (
     <form onSubmit={handleSubmit} className="booking-form">
-      {/* Prestation */}
+      {/* Dropdown - Categories */}
       <DropdownFilter
         options={servicesData.map((cat) => cat.category)}
         selectedOption={selectedCategory}
         handleChange={handleCategoryChange}
-        label="Catégorie"
+        label="Catégories"
+        defaultOptionLabel="Toutes les catégories"
       />
 
-      {selectedCategory && (
-        <DropdownFilter
-          options={
-            servicesData
-              .find((cat) => cat.category === selectedCategory)
-              ?.services.map((srv) => srv.title) || []
-          }
-          selectedOption={selectedService}
-          handleChange={handleServiceChange}
-          label="Service"
-        />
-      )}
+      {/* Dropdown - Services */}
+      <DropdownFilter
+        options={filteredServices.map((srv) => srv.title)}
+        selectedOption={selectedService}
+        handleChange={handleServiceChange}
+        label="Services"
+        defaultOptionLabel="Tous les services"
+      />
 
+      {/* Description */}
       <div>
         <label htmlFor="description">Description</label>
         <textarea
@@ -119,7 +132,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
         />
       </div>
 
-      {/* Nom complet */}
+      {/* FullName */}
       <div>
         <label htmlFor="fullName">Nom complet</label>
         <input
@@ -133,7 +146,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
         />
       </div>
 
-      {/* E-mail */}
+      {/* Email */}
       <div>
         <label htmlFor="email">Adresse e-mail</label>
         <input
@@ -147,7 +160,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
         />
       </div>
 
-      {/* Téléphone */}
+      {/* Phone */}
       <div>
         <label htmlFor="phone">Numéro de téléphone</label>
         <input
@@ -161,7 +174,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
         />
       </div>
 
-      {/* Adresse */}
+      {/* Address */}
       <div>
         <label htmlFor="address">Adresse de prestation</label>
         <input
@@ -188,7 +201,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
         />
       </div>
 
-      {/* Heure */}
+      {/* Time */}
       <div>
         <label htmlFor="time">Heure</label>
         <input
@@ -201,7 +214,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
         />
       </div>
 
-      {/* Commentaires */}
+      {/* Comments */}
       <div>
         <label htmlFor="comments">Commentaires supplémentaires</label>
         <textarea
@@ -213,7 +226,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
         />
       </div>
 
-      {/* Bouton de soumission */}
+      {/* Submit */}
       <button type="submit">Réserver</button>
     </form>
   );

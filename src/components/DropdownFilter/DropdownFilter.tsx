@@ -6,6 +6,7 @@ interface DropdownFilterProps {
   selectedOption: string;
   handleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   label: string;
+  defaultOptionLabel?: string;
 }
 
 const DropdownFilter: React.FC<DropdownFilterProps> = ({
@@ -13,6 +14,7 @@ const DropdownFilter: React.FC<DropdownFilterProps> = ({
   selectedOption,
   handleChange,
   label,
+  defaultOptionLabel = "Sélectionner une option",
 }) => {
   return (
     <div className="dropdown-filter">
@@ -22,7 +24,7 @@ const DropdownFilter: React.FC<DropdownFilterProps> = ({
         value={selectedOption}
         onChange={handleChange}
       >
-        <option value="">Toutes les catégories</option>
+        <option value="">{defaultOptionLabel}</option>
         {options.map((option, index) => (
           <option key={index} value={option}>
             {option}

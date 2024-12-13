@@ -27,6 +27,7 @@ const ServicesPage: React.FC = () => {
         selectedOption={selectedCategory}
         handleChange={handleCategoryChange}
         label="Trier par catégorie :"
+        defaultOptionLabel="Toutes les catégories"
       />
 
       <div className="services-list">
