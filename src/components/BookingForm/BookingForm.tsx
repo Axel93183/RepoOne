@@ -101,35 +101,32 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
 
   return (
     <form onSubmit={handleSubmit} className="booking-form">
-      {/* Dropdown - Categories */}
-      <DropdownFilter
-        options={servicesData.map((cat) => cat.category)}
-        selectedOption={selectedCategory}
-        handleChange={handleCategoryChange}
-        label="Catégories"
-        defaultOptionLabel="Toutes les catégories"
-      />
+      <div className="dropdowns">
+        {/* Dropdown - Categories */}
+        <DropdownFilter
+          options={servicesData.map((cat) => cat.category)}
+          selectedOption={selectedCategory}
+          handleChange={handleCategoryChange}
+          label="Catégories"
+          defaultOptionLabel="Toutes les catégories"
+        />
 
-      {/* Dropdown - Services */}
-      <DropdownFilter
-        options={filteredServices.map((srv) => srv.title)}
-        selectedOption={selectedService}
-        handleChange={handleServiceChange}
-        label="Services"
-        defaultOptionLabel="Tous les services"
-      />
+        {/* Dropdown - Services */}
+        <DropdownFilter
+          options={filteredServices.map((srv) => srv.title)}
+          selectedOption={selectedService}
+          handleChange={handleServiceChange}
+          label="Services"
+          defaultOptionLabel="Tous les services"
+        />
+      </div>
 
       {/* Description */}
       <div>
         <label htmlFor="description">Description</label>
-        <textarea
-          id="description"
-          name="description"
-          value={formData.description}
-          onChange={handleChange}
-          placeholder="Description de la prestation"
-          readOnly
-        />
+        <div id="description" className="description-text">
+          {formData.description || "Description de la prestation"}
+        </div>
       </div>
 
       {/* FullName */}

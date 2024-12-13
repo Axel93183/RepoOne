@@ -1,7 +1,12 @@
-.booking-form {
+.booking-form,
+.booking-form .dropdowns,
+.booking-form .dropdowns .dropdown-filter {
   display: flex;
   flex-direction: column;
   gap: 15px;
+}
+
+.booking-form {
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 20px;
@@ -9,23 +14,41 @@
   margin: 15px auto;
 }
 
+.booking-form .dropdowns,
+.booking-form .dropdowns .dropdown-filter {
+  align-items: flex-start;
+  margin: 0;
+}
+
+.booking-form .dropdowns .dropdown-filter label {
+  margin: 0;
+}
+
+.booking-form .dropdowns .dropdown-filter select {
+  margin: 0;
+  width: 100%;
+}
+
 .booking-form label {
   font-weight: bold;
   margin-bottom: 5px;
+  font-size: 18px;
 }
 
 .booking-form input,
-.booking-form textarea {
+.booking-form textarea,
+.booking-form .description-text {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 16px;
   width: 100%;
   margin-top: 10px;
+  background-color: #f9f9f9;
 }
 
 .booking-form textarea {
-  min-height: 200px;
+  min-height: 150px;
   max-width: 100%;
 }
 
