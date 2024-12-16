@@ -63,29 +63,23 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
     }
   }, [prefilledData]);
 
-  const validateField = (name: string, value: string) => {
-    let error = "";
-
+  const validateField = (name: string, value: string): string => {
     if (name === "title" && !value.trim()) {
-      error = "Veuillez sélectionner la prestation de votre choix.";
+      return "Veuillez sélectionner la prestation de votre choix.";
     } else if (name === "fullName" && !/^[a-zA-Z\s-]+$/.test(value)) {
-      error =
-        "Le nom complet doit contenir uniquement des lettres, des espaces ou des tirets.";
+      return "Le nom complet doit contenir uniquement des lettres, des espaces ou des tirets.";
     } else if (name === "email" && !/\S+@\S+\.\S+/.test(value)) {
-      error = "Une adresse e-mail valide est requise.";
+      return "Une adresse e-mail valide est requise.";
     } else if (name === "phone" && !/^\+?[0-9]{7,15}$/.test(value)) {
-      error = "Un numéro de téléphone valide est requis.";
+      return "Un numéro de téléphone valide est requis.";
     } else if (name === "address" && !value.trim()) {
-      error = "L'adresse est requise.";
+      return "L'adresse est requise.";
     } else if (name === "date" && !value.trim()) {
-      error = "Une date valide est requise.";
+      return "Une date valide est requise.";
     } else if (name === "time" && !/^([01]\d|2[0-3]):?([0-5]\d)$/.test(value)) {
-      error = "Une heure valide est requise.";
-    } else {
-      error = "";
+      return "Une heure valide est requise.";
     }
-
-    setErrors((prev) => ({ ...prev, [name]: error }));
+    return "";
   };
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -112,7 +106,9 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
       title: serviceTitle,
       description: service?.description || "",
     }));
-    validateField("title", serviceTitle);
+
+    const error = validateField("title", serviceTitle);
+    setErrors((prev) => ({ ...prev, title: error }));
   };
 
   const handleChange = (
@@ -120,19 +116,35 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    validateField(name, value);
+    const error = validateField(name, value);
+    setErrors((prev) => ({ ...prev, [name]: error }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    Object.entries(formData).forEach(([key, value]) =>
-      validateField(key, value as string)
-    );
+    const newErrors: typeof errors = { ...errors };
 
-    if (Object.values(errors).some((err) => err)) {
+    Object.entries(formData).forEach(([key, value]) => {
+      const error = validateField(key, value as string);
+      newErrors[key as keyof typeof errors] = error;
+    });
+
+    setErrors(newErrors);
+
+    if (Object.values(newErrors).some((err) => err)) {
       return;
     }
+
+    setErrors({
+      title: "",
+      fullName: "",
+      email: "",
+      phone: "",
+      address: "",
+      date: "",
+      time: "",
+    });
 
     try {
       const response = await fetch("http://localhost:5000/api/booking", {
