@@ -149,11 +149,17 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
       time: "",
     });
 
+    const dataToSend = {
+      ...formData,
+      category: selectedCategory,
+      description: formData.description,
+    };
+
     try {
       const response = await fetch("http://localhost:5000/api/booking", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(dataToSend),
       });
 
       if (!response.ok) {
