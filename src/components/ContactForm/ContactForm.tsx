@@ -8,29 +8,50 @@ const ContactForm: React.FC = () => {
     message: "",
   });
 
+  const [errors, setErrors] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  const validateField = (name: string, value: string): string => {
+    if (name === "name" && !/^[a-zA-Z\s-]+$/.test(value)) {
+      return "Le nom contient des caractères invalides. Seuls les lettres, espaces et tirets sont autorisés.";
+    }
+    if (name === "email" && !/\S+@\S+\.\S+/.test(value)) {
+      return "Adresse email invalide.";
+    }
+    if (name === "message" && !value.trim()) {
+      return "Le message ne peut pas être vide.";
+    }
+    return "";
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    const error = validateField(name, value);
+    setErrors((prev) => ({ ...prev, [name]: error }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log("Données du formulaire envoyées :", formData);
+    const newErrors = { ...errors };
+    Object.entries(formData).forEach(([key, value]) => {
+      const error = validateField(key, value);
+      newErrors[key as keyof typeof errors] = error;
+    });
 
-    if (!/^[a-zA-Z\s-]+$/.test(formData.name)) {
-      alert(
-        "Le nom contient des caractères invalides. Seuls les lettres, espaces et tirets sont autorisés."
-      );
-      return;
-    }
+    setErrors(newErrors);
 
-    if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      alert("Adresse email invalide.");
+    if (Object.values(newErrors).some((err) => err)) {
       return;
     }
 
@@ -46,6 +67,7 @@ const ContactForm: React.FC = () => {
         setPreviewUrl(data.previewUrl);
         setStatus("success");
         setFormData({ name: "", email: "", message: "" });
+        setErrors({ name: "", email: "", message: "" });
       } else {
         setStatus("error");
       }
@@ -64,8 +86,8 @@ const ContactForm: React.FC = () => {
           name="name"
           value={formData.name}
           onChange={handleChange}
-          required
         />
+        {errors.name && <p className="error-message">{errors.name}</p>}
       </label>
       <label>
         Email:
@@ -74,8 +96,8 @@ const ContactForm: React.FC = () => {
           name="email"
           value={formData.email}
           onChange={handleChange}
-          required
         />
+        {errors.email && <p className="error-message">{errors.email}</p>}
       </label>
       <label>
         Message:
@@ -83,8 +105,8 @@ const ContactForm: React.FC = () => {
           name="message"
           value={formData.message}
           onChange={handleChange}
-          required
         />
+        {errors.message && <p className="error-message">{errors.message}</p>}
       </label>
       <button type="submit">Envoyer</button>
 
