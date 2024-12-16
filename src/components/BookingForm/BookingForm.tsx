@@ -24,6 +24,9 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [selectedService, setSelectedService] = useState<string>("");
 
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -159,9 +162,13 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
           ...prev,
           api: data.errors.map((err: any) => err.msg).join(", "),
         }));
+        setStatus("error");
         return;
       }
 
+      const data = await response.json();
+      setPreviewUrl(data.previewUrl);
+      setStatus("success");
       setFormData({
         title: "",
         description: "",
@@ -311,6 +318,25 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
 
       {/* Submit */}
       <button type="submit">Réserver</button>
+
+      {status === "success" && (
+        <>
+          <p className="success-message">Réservation envoyée avec succès !</p>
+          {previewUrl && (
+            <p className="preview-url">
+              Aperçu de l'email :
+              <a href={previewUrl} target="_blank" rel="noopener noreferrer">
+                {previewUrl}
+              </a>
+            </p>
+          )}
+        </>
+      )}
+      {status === "error" && (
+        <p className="error-message">
+          Erreur lors de l'envoi. Veuillez réessayer.
+        </p>
+      )}
     </form>
   );
 };
