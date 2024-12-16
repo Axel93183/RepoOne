@@ -36,6 +36,16 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
     comments: "",
   });
 
+  const [errors, setErrors] = useState({
+    title: "",
+    fullName: "",
+    email: "",
+    phone: "",
+    address: "",
+    date: "",
+    time: "",
+  });
+
   useEffect(() => {
     if (prefilledData) {
       const service = allServices.find(
@@ -52,6 +62,31 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
       }));
     }
   }, [prefilledData]);
+
+  const validateField = (name: string, value: string) => {
+    let error = "";
+
+    if (name === "title" && !value.trim()) {
+      error = "Veuillez sélectionner la prestation de votre choix.";
+    } else if (name === "fullName" && !/^[a-zA-Z\s-]+$/.test(value)) {
+      error =
+        "Le nom complet doit contenir uniquement des lettres, des espaces ou des tirets.";
+    } else if (name === "email" && !/\S+@\S+\.\S+/.test(value)) {
+      error = "Une adresse e-mail valide est requise.";
+    } else if (name === "phone" && !/^\+?[0-9]{7,15}$/.test(value)) {
+      error = "Un numéro de téléphone valide est requis.";
+    } else if (name === "address" && !value.trim()) {
+      error = "L'adresse est requise.";
+    } else if (name === "date" && !value.trim()) {
+      error = "Une date valide est requise.";
+    } else if (name === "time" && !/^([01]\d|2[0-3]):?([0-5]\d)$/.test(value)) {
+      error = "Une heure valide est requise.";
+    } else {
+      error = "";
+    }
+
+    setErrors((prev) => ({ ...prev, [name]: error }));
+  };
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const category = e.target.value;
@@ -77,22 +112,58 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
       title: serviceTitle,
       description: service?.description || "",
     }));
+    validateField("title", serviceTitle);
   };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    validateField(name, value);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Réservation soumise :", formData);
-    alert("Réservation enregistrée !");
+
+    Object.entries(formData).forEach(([key, value]) =>
+      validateField(key, value as string)
+    );
+
+    if (Object.values(errors).some((err) => err)) {
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:5000/api/booking", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        setErrors((prev) => ({
+          ...prev,
+          api: data.errors.map((err: any) => err.msg).join(", "),
+        }));
+        return;
+      }
+
+      setFormData({
+        title: "",
+        description: "",
+        fullName: "",
+        email: "",
+        phone: "",
+        address: "",
+        date: "",
+        time: "",
+        comments: "",
+      });
+    } catch (error) {
+      console.error("Booking request failed:", error);
+    }
   };
 
   const filteredServices = selectedCategory
@@ -120,6 +191,9 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
           defaultOptionLabel="Tous les services"
         />
       </div>
+      {errors.title && (
+        <p className="error-message-service-title">{errors.title}</p>
+      )}
 
       {/* Description */}
       <div>
@@ -139,8 +213,8 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
           value={formData.fullName}
           onChange={handleChange}
           placeholder="Votre nom complet"
-          required
         />
+        {errors.fullName && <p className="error-message">{errors.fullName}</p>}
       </div>
 
       {/* Email */}
@@ -153,8 +227,8 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
           value={formData.email}
           onChange={handleChange}
           placeholder="Votre adresse e-mail"
-          required
         />
+        {errors.email && <p className="error-message">{errors.email}</p>}
       </div>
 
       {/* Phone */}
@@ -167,8 +241,8 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
           value={formData.phone}
           onChange={handleChange}
           placeholder="Votre numéro de téléphone"
-          required
         />
+        {errors.phone && <p className="error-message">{errors.phone}</p>}
       </div>
 
       {/* Address */}
@@ -181,8 +255,8 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
           value={formData.address}
           onChange={handleChange}
           placeholder="Adresse où la prestation doit être réalisée"
-          required
         />
+        {errors.address && <p className="error-message">{errors.address}</p>}
       </div>
 
       {/* Date */}
@@ -194,8 +268,8 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
           type="date"
           value={formData.date}
           onChange={handleChange}
-          required
         />
+        {errors.date && <p className="error-message">{errors.date}</p>}
       </div>
 
       {/* Time */}
@@ -207,8 +281,8 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
           type="time"
           value={formData.time}
           onChange={handleChange}
-          required
         />
+        {errors.time && <p className="error-message">{errors.time}</p>}
       </div>
 
       {/* Comments */}
