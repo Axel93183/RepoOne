@@ -196,6 +196,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
       <div className="dropdowns">
         {/* Dropdown - Categories */}
         <DropdownFilter
+          id="category-filter"
           options={servicesData.map((cat) => cat.category)}
           selectedOption={selectedCategory}
           handleChange={handleCategoryChange}
@@ -205,6 +206,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
 
         {/* Dropdown - Services */}
         <DropdownFilter
+          id="services-filter"
           options={filteredServices.map((srv) => srv.title)}
           selectedOption={selectedService}
           handleChange={handleServiceChange}

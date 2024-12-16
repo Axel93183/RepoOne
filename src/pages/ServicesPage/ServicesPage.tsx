@@ -23,6 +23,7 @@ const ServicesPage: React.FC = () => {
       <h1>Nos Services</h1>
 
       <DropdownFilter
+        id="category-filter"
         options={categories}
         selectedOption={selectedCategory}
         handleChange={handleCategoryChange}
