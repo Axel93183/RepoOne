@@ -221,9 +221,15 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
       {/* Description */}
       <div>
         <label htmlFor="description">Description</label>
-        <div id="description" className="description-text">
-          {formData.description || "Description de la prestation"}
-        </div>
+        <input
+          id="description"
+          name="description"
+          value={formData.description || "Description de la prestation"}
+          onChange={handleChange}
+          className="description-text"
+          placeholder="Description de la prestation"
+          readOnly
+        />
       </div>
 
       {/* FullName */}

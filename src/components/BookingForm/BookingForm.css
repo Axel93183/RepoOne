@@ -42,9 +42,13 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 16px;
-  width: 100%;
+  min-width: 100%;
   margin-top: 10px;
   background-color: #f9f9f9;
+}
+
+.description-text {
+  color: var(--color-text);
 }
 
 .booking-form textarea {
