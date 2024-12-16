@@ -180,6 +180,8 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
         time: "",
         comments: "",
       });
+      setSelectedCategory("");
+      setSelectedService("");
     } catch (error) {
       console.error("Booking request failed:", error);
     }
