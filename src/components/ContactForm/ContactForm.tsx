@@ -3,13 +3,15 @@ import "./ContactForm.css";
 
 const ContactForm: React.FC = () => {
   const [formData, setFormData] = useState({
-    name: "",
+    lastName: "",
+    firstName: "",
     email: "",
     message: "",
   });
 
   const [errors, setErrors] = useState({
-    name: "",
+    lastName: "",
+    firstName: "",
     email: "",
     message: "",
   });
@@ -18,8 +20,11 @@ const ContactForm: React.FC = () => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const validateField = (name: string, value: string): string => {
-    if (name === "name" && !/^[a-zA-Z\s-]+$/.test(value)) {
+    if (name === "lastName" && !/^[a-zA-Z\s-]+$/.test(value)) {
       return "Le nom contient des caractères invalides. Seuls les lettres, espaces et tirets sont autorisés.";
+    }
+    if (name === "firstName" && !/^[a-zA-Z\s-]+$/.test(value)) {
+      return "Le prénom contient des caractères invalides. Seuls les lettres, espaces et tirets sont autorisés.";
     }
     if (name === "email" && !/\S+@\S+\.\S+/.test(value)) {
       return "Adresse email invalide.";
@@ -66,8 +71,8 @@ const ContactForm: React.FC = () => {
         const data = await response.json();
         setPreviewUrl(data.previewUrl);
         setStatus("success");
-        setFormData({ name: "", email: "", message: "" });
-        setErrors({ name: "", email: "", message: "" });
+        setFormData({ lastName: "", firstName: "", email: "", message: "" });
+        setErrors({ lastName: "", firstName: "", email: "", message: "" });
       } else {
         setStatus("error");
       }
@@ -79,16 +84,35 @@ const ContactForm: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit} className="contact-form">
-      <label>
-        Nom:
-        <input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-        />
-        {errors.name && <p className="error-message">{errors.name}</p>}
-      </label>
+      <div className="full-name">
+        <label className="last-name">
+          Nom
+          <input
+            name="lastName"
+            type="text"
+            value={formData.lastName}
+            onChange={handleChange}
+            placeholder="Votre nom"
+          />
+          {errors.lastName && (
+            <p className="error-message">{errors.lastName}</p>
+          )}
+        </label>
+
+        <label className="first-name">
+          Prénom
+          <input
+            name="firstName"
+            type="text"
+            value={formData.firstName}
+            onChange={handleChange}
+            placeholder="Votre prénom"
+          />
+          {errors.firstName && (
+            <p className="error-message">{errors.firstName}</p>
+          )}
+        </label>
+      </div>
       <label>
         Email:
         <input

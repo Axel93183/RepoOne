@@ -9,9 +9,15 @@
   margin: 15px auto;
 }
 
+.contact-form .full-name {
+  display: flex;
+  gap: 15px;
+}
+
 .contact-form label {
   font-weight: bold;
   margin-bottom: 5px;
+  flex: 1;
 }
 
 .contact-form input,
