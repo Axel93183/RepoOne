@@ -21,13 +21,11 @@ const ServicesPage: React.FC = () => {
   return (
     <div className="services-page">
       <h1>Nos Services</h1>
-
       <DropdownFilter
-        id="category-filter"
         options={categories}
         selectedOption={selectedCategory}
         handleChange={handleCategoryChange}
-        label="Trier par catégorie :"
+        label="Trier par catégorie : "
         defaultOptionLabel="Toutes les catégories"
       />
 

@@ -30,7 +30,8 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    fullName: "",
+    lastName: "",
+    firstName: "",
     email: "",
     phone: "",
     address: "",
@@ -41,7 +42,8 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
 
   const [errors, setErrors] = useState({
     title: "",
-    fullName: "",
+    lastName: "",
+    firstName: "",
     email: "",
     phone: "",
     address: "",
@@ -69,8 +71,10 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
   const validateField = (name: string, value: string): string => {
     if (name === "title" && !value.trim()) {
       return "Veuillez sélectionner la prestation de votre choix.";
-    } else if (name === "fullName" && !/^[a-zA-Z\s-]+$/.test(value)) {
-      return "Le nom complet doit contenir uniquement des lettres, des espaces ou des tirets.";
+    } else if (name === "lastName" && !/^[a-zA-Z\s-]+$/.test(value)) {
+      return "Le nom doit contenir uniquement des lettres, des espaces ou des tirets.";
+    } else if (name === "firstName" && !/^[a-zA-Z\s-]+$/.test(value)) {
+      return "Le prénom doit contenir uniquement des lettres, des espaces ou des tirets.";
     } else if (name === "email" && !/\S+@\S+\.\S+/.test(value)) {
       return "Une adresse e-mail valide est requise.";
     } else if (name === "phone" && !/^\+?[0-9]{7,15}$/.test(value)) {
@@ -141,7 +145,8 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
 
     setErrors({
       title: "",
-      fullName: "",
+      lastName: "",
+      firstName: "",
       email: "",
       phone: "",
       address: "",
@@ -178,7 +183,8 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
       setFormData({
         title: "",
         description: "",
-        fullName: "",
+        lastName: "",
+        firstName: "",
         email: "",
         phone: "",
         address: "",
@@ -202,7 +208,6 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
       <div className="dropdowns">
         {/* Dropdown - Categories */}
         <DropdownFilter
-          id="category-filter"
           options={servicesData.map((cat) => cat.category)}
           selectedOption={selectedCategory}
           handleChange={handleCategoryChange}
@@ -212,7 +217,6 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
 
         {/* Dropdown - Services */}
         <DropdownFilter
-          id="services-filter"
           options={filteredServices.map((srv) => srv.title)}
           selectedOption={selectedService}
           handleChange={handleServiceChange}
@@ -220,15 +224,15 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
           defaultOptionLabel="Tous les services"
         />
       </div>
+
       {errors.title && (
         <p className="error-message-service-title">{errors.title}</p>
       )}
 
       {/* Description */}
-      <div>
-        <label htmlFor="description">Description</label>
+      <label>
+        Description
         <input
-          id="description"
           name="description"
           value={formData.description || "Description de la prestation"}
           onChange={handleChange}
@@ -236,27 +240,43 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
           placeholder="Description de la prestation"
           readOnly
         />
-      </div>
+      </label>
 
       {/* FullName */}
-      <div>
-        <label htmlFor="fullName">Nom complet</label>
-        <input
-          id="fullName"
-          name="fullName"
-          type="text"
-          value={formData.fullName}
-          onChange={handleChange}
-          placeholder="Votre nom complet"
-        />
-        {errors.fullName && <p className="error-message">{errors.fullName}</p>}
+      <div className="full-name">
+        <label className="last-name">
+          Nom
+          <input
+            name="lastName"
+            type="text"
+            value={formData.lastName}
+            onChange={handleChange}
+            placeholder="Votre nom"
+          />
+          {errors.lastName && (
+            <p className="error-message">{errors.lastName}</p>
+          )}
+        </label>
+
+        <label className="first-name">
+          Prénom
+          <input
+            name="firstName"
+            type="text"
+            value={formData.firstName}
+            onChange={handleChange}
+            placeholder="Votre prénom"
+          />
+          {errors.firstName && (
+            <p className="error-message">{errors.firstName}</p>
+          )}
+        </label>
       </div>
 
       {/* Email */}
-      <div>
-        <label htmlFor="email">Adresse e-mail</label>
+      <label>
+        Adresse e-mail
         <input
-          id="email"
           name="email"
           type="email"
           value={formData.email}
@@ -264,13 +284,12 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
           placeholder="Votre adresse e-mail"
         />
         {errors.email && <p className="error-message">{errors.email}</p>}
-      </div>
+      </label>
 
       {/* Phone */}
-      <div>
-        <label htmlFor="phone">Numéro de téléphone</label>
+      <label>
+        Numéro de téléphone
         <input
-          id="phone"
           name="phone"
           type="tel"
           value={formData.phone}
@@ -278,13 +297,12 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
           placeholder="Votre numéro de téléphone"
         />
         {errors.phone && <p className="error-message">{errors.phone}</p>}
-      </div>
+      </label>
 
       {/* Address */}
-      <div>
-        <label htmlFor="address">Adresse de prestation</label>
+      <label>
+        Adresse de prestation
         <input
-          id="address"
           name="address"
           type="text"
           value={formData.address}
@@ -292,45 +310,42 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
           placeholder="Adresse où la prestation doit être réalisée"
         />
         {errors.address && <p className="error-message">{errors.address}</p>}
-      </div>
+      </label>
 
       {/* Date */}
-      <div>
-        <label htmlFor="date">Date</label>
+      <label>
+        Date
         <input
-          id="date"
           name="date"
           type="date"
           value={formData.date}
           onChange={handleChange}
         />
         {errors.date && <p className="error-message">{errors.date}</p>}
-      </div>
+      </label>
 
       {/* Time */}
-      <div>
-        <label htmlFor="time">Heure</label>
+      <label>
+        Heure
         <input
-          id="time"
           name="time"
           type="time"
           value={formData.time}
           onChange={handleChange}
         />
         {errors.time && <p className="error-message">{errors.time}</p>}
-      </div>
+      </label>
 
       {/* Comments */}
-      <div>
-        <label htmlFor="comments">Commentaires supplémentaires</label>
+      <label>
+        Commentaires supplémentaires
         <textarea
-          id="comments"
           name="comments"
           value={formData.comments}
           onChange={handleChange}
           placeholder="Indiquez vos besoins ou informations complémentaires"
         />
-      </div>
+      </label>
 
       {/* Submit */}
       <button type="submit">Réserver</button>
