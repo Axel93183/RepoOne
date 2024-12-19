@@ -35,18 +35,26 @@ const ContactForm: React.FC = () => {
     return "";
   };
 
+  const handleBlur = (
+    e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    const error = validateField(name, value);
+    setErrors((prev) => ({ ...prev, [name]: error }));
+  };
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-
-    const error = validateField(name, value);
-    setErrors((prev) => ({ ...prev, [name]: error }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    setStatus("idle");
 
     const newErrors = { ...errors };
     Object.entries(formData).forEach(([key, value]) => {
@@ -57,6 +65,7 @@ const ContactForm: React.FC = () => {
     setErrors(newErrors);
 
     if (Object.values(newErrors).some((err) => err)) {
+      setStatus("error");
       return;
     }
 
@@ -91,6 +100,7 @@ const ContactForm: React.FC = () => {
             name="lastName"
             type="text"
             value={formData.lastName}
+            onBlur={handleBlur}
             onChange={handleChange}
             placeholder="Votre nom"
           />
@@ -105,6 +115,7 @@ const ContactForm: React.FC = () => {
             name="firstName"
             type="text"
             value={formData.firstName}
+            onBlur={handleBlur}
             onChange={handleChange}
             placeholder="Votre prénom"
           />
@@ -119,6 +130,7 @@ const ContactForm: React.FC = () => {
           type="email"
           name="email"
           value={formData.email}
+          onBlur={handleBlur}
           onChange={handleChange}
         />
         {errors.email && <p className="error-message">{errors.email}</p>}
@@ -128,6 +140,7 @@ const ContactForm: React.FC = () => {
         <textarea
           name="message"
           value={formData.message}
+          onBlur={handleBlur}
           onChange={handleChange}
         />
         {errors.message && <p className="error-message">{errors.message}</p>}
@@ -149,7 +162,7 @@ const ContactForm: React.FC = () => {
       )}
       {status === "error" && (
         <p className="error-message">
-          Erreur lors de l'envoi. Veuillez réessayer.
+          Erreur lors de l'envoi. Veuillez réessayer s'il vous plaît.
         </p>
       )}
     </form>
