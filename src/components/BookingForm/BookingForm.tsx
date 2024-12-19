@@ -152,6 +152,8 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    setStatus("idle");
+
     const newErrors: typeof errors = { ...errors };
 
     Object.entries(formData).forEach(([key, value]) => {
@@ -162,6 +164,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
     setErrors(newErrors);
 
     if (Object.values(newErrors).some((err) => err)) {
+      setStatus("error");
       return;
     }
 
@@ -396,7 +399,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
       )}
       {status === "error" && (
         <p className="error-message">
-          Erreur lors de l'envoi. Veuillez réessayer.
+          Erreur lors de l'envoi. Veuillez réessayer s'il vous plaît.
         </p>
       )}
     </form>
