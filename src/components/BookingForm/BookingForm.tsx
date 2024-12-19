@@ -133,13 +133,20 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
     setErrors((prev) => ({ ...prev, title: error }));
   };
 
+  const handleBlur = (
+    e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    const error = validateField(name, value);
+    setErrors((prev) => ({ ...prev, [name]: error }));
+  };
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    const error = validateField(name, value);
-    setErrors((prev) => ({ ...prev, [name]: error }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -265,6 +272,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
             name="lastName"
             type="text"
             value={formData.lastName}
+            onBlur={handleBlur}
             onChange={handleChange}
             placeholder="Votre nom"
           />
@@ -279,6 +287,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
             name="firstName"
             type="text"
             value={formData.firstName}
+            onBlur={handleBlur}
             onChange={handleChange}
             placeholder="Votre prénom"
           />
@@ -295,6 +304,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
           name="email"
           type="email"
           value={formData.email}
+          onBlur={handleBlur}
           onChange={handleChange}
           placeholder="Votre adresse e-mail"
         />
@@ -308,6 +318,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
           name="phone"
           type="tel"
           value={formData.phone}
+          onBlur={handleBlur}
           onChange={handleChange}
           placeholder="Votre numéro de téléphone"
         />
@@ -321,6 +332,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
           name="address"
           type="text"
           value={formData.address}
+          onBlur={handleBlur}
           onChange={handleChange}
           placeholder="Adresse où la prestation doit être réalisée"
         />
@@ -334,6 +346,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
           name="date"
           type="date"
           value={formData.date}
+          onBlur={handleBlur}
           onChange={handleChange}
           min={getTodayDate()}
         />
@@ -347,6 +360,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
           name="time"
           type="time"
           value={formData.time}
+          onBlur={handleBlur}
           onChange={handleChange}
         />
         {errors.time && <p className="error-message">{errors.time}</p>}
@@ -358,6 +372,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
         <textarea
           name="comments"
           value={formData.comments}
+          onBlur={handleBlur}
           onChange={handleChange}
           placeholder="Indiquez vos besoins ou informations complémentaires"
         />
