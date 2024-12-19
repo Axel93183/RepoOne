@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { validateField } from "../../utils/validationUtils";
 import "./ContactForm.css";
 
 const ContactForm: React.FC = () => {
@@ -18,22 +19,6 @@ const ContactForm: React.FC = () => {
 
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-
-  const validateField = (name: string, value: string): string => {
-    if (name === "lastName" && !/^[a-zA-Z\s-]+$/.test(value)) {
-      return "Le nom contient des caractères invalides. Seuls les lettres, espaces et tirets sont autorisés.";
-    }
-    if (name === "firstName" && !/^[a-zA-Z\s-]+$/.test(value)) {
-      return "Le prénom contient des caractères invalides. Seuls les lettres, espaces et tirets sont autorisés.";
-    }
-    if (name === "email" && !/\S+@\S+\.\S+/.test(value)) {
-      return "Adresse email invalide.";
-    }
-    if (name === "message" && !value.trim()) {
-      return "Le message ne peut pas être vide.";
-    }
-    return "";
-  };
 
   const handleBlur = (
     e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>

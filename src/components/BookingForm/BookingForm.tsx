@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { servicesData } from "../../data/servicesData";
+import { getTodayDate, validateField } from "../../utils/validationUtils";
 import DropdownFilter from "../DropdownFilter/DropdownFilter";
 import "./BookingForm.css";
 
@@ -10,8 +11,6 @@ interface BookingFormProps {
   };
 }
 
-// Utilise `flatMap` pour aplatir les données de `servicesData` pour obtenir une liste unique de tous les services
-// Chaque service est associé à son titre, sa catégorie et sa description.
 const allServices = servicesData.flatMap((cat) =>
   cat.services.map((srv) => ({
     title: srv.title,
@@ -51,14 +50,6 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
     time: "",
   });
 
-  const getTodayDate = (): string => {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, "0");
-    const day = String(today.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  };
-
   useEffect(() => {
     if (prefilledData) {
       const service = allServices.find(
@@ -75,34 +66,6 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
       }));
     }
   }, [prefilledData]);
-
-  const validateField = (name: string, value: string): string => {
-    if (name === "title" && !value.trim()) {
-      return "Veuillez sélectionner la prestation de votre choix.";
-    } else if (name === "lastName" && !/^[a-zA-Z\s-]+$/.test(value)) {
-      return "Le nom doit contenir uniquement des lettres, des espaces ou des tirets.";
-    } else if (name === "firstName" && !/^[a-zA-Z\s-]+$/.test(value)) {
-      return "Le prénom doit contenir uniquement des lettres, des espaces ou des tirets.";
-    } else if (name === "email" && !/\S+@\S+\.\S+/.test(value)) {
-      return "Une adresse e-mail valide est requise.";
-    } else if (name === "phone" && !/^\+?[0-9]{7,15}$/.test(value)) {
-      return "Un numéro de téléphone valide est requis.";
-    } else if (name === "address" && !value.trim()) {
-      return "L'adresse est requise.";
-    } else if (name === "date") {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      const selectedDate = new Date(value);
-      if (!value.trim()) {
-        return "Une date valide est requise.";
-      } else if (selectedDate.getTime() < today.getTime()) {
-        return "La date doit être aujourd'hui ou ultérieure.";
-      }
-    } else if (name === "time" && !/^([01]\d|2[0-3]):?([0-5]\d)$/.test(value)) {
-      return "Une heure valide est requise.";
-    }
-    return "";
-  };
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const category = e.target.value;
