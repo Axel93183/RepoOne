@@ -51,6 +51,14 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
     time: "",
   });
 
+  const getTodayDate = (): string => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
   useEffect(() => {
     if (prefilledData) {
       const service = allServices.find(
@@ -81,8 +89,15 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
       return "Un numéro de téléphone valide est requis.";
     } else if (name === "address" && !value.trim()) {
       return "L'adresse est requise.";
-    } else if (name === "date" && !value.trim()) {
-      return "Une date valide est requise.";
+    } else if (name === "date") {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const selectedDate = new Date(value);
+      if (!value.trim()) {
+        return "Une date valide est requise.";
+      } else if (selectedDate.getTime() < today.getTime()) {
+        return "La date doit être aujourd'hui ou ultérieure.";
+      }
     } else if (name === "time" && !/^([01]\d|2[0-3]):?([0-5]\d)$/.test(value)) {
       return "Une heure valide est requise.";
     }
@@ -320,6 +335,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ prefilledData }) => {
           type="date"
           value={formData.date}
           onChange={handleChange}
+          min={getTodayDate()}
         />
         {errors.date && <p className="error-message">{errors.date}</p>}
       </label>
